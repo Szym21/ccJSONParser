@@ -1,9 +1,9 @@
 #! /usr/bin/env node
 
+import { parser } from "./parser";
+import { tokenizer } from "./tokenizer";
 import path from 'path';
 import fs from 'fs';
-import { Tokens } from './tokens';
-import { JSONArray, JSONObject, JSONValue } from './types';
 
 const FAILURE_EXIT_CODE = 1;
 const SUCCESS_EXIT_CODE = 0;
@@ -16,13 +16,6 @@ function readFile(filepath: string) : string {
     return fs.readFileSync(filepath, 'utf8').toString()
 }
 
-function ParseText(text : string) : number{
-    let correctJSON = true;
-    
-    if (text[0] !== Tokens.BEGIN_OBJECT) correctJSON = false;
-    if (text[text.length - 1] !== Tokens.END_OBJECT) correctJSON = false;
+const result = parser(tokenizer(readFile(preparePath(process.argv[2]))))
 
-    return correctJSON ? SUCCESS_EXIT_CODE : FAILURE_EXIT_CODE;
-}
-
-console.log(ParseText(readFile(preparePath(process.argv[2]))));
+console.log(result? SUCCESS_EXIT_CODE : FAILURE_EXIT_CODE);
