@@ -1,5 +1,5 @@
 import { Token } from './types';
-import { ASTNode } from './types';
+import { JsonNode } from './types';
 
 export const parser = (tokens: Token[]): boolean => {
     if (!tokens.length) {
@@ -11,7 +11,7 @@ export const parser = (tokens: Token[]): boolean => {
       return tokens[++current];
     }
 
-    function parseValue(): ASTNode {
+    function parseValue(): JsonNode {
         const token = tokens[current];
         switch (token.type) {
             case "String":
@@ -34,7 +34,7 @@ export const parser = (tokens: Token[]): boolean => {
     }
 
     function parseObject() {
-        const node: ASTNode = { type: "Object", value: {} };
+        const node: JsonNode = { type: "Object", value: {} };
         let token = consume(); 
         while (token.type !== "BraceClose") {
             if (token.type === "String") {
@@ -48,13 +48,12 @@ export const parser = (tokens: Token[]): boolean => {
                 throw new Error(`Expected String key in object. Token type: ${token.type}`);
             }
             token = consume(); 
-            if (token.type === "Comma") token = consume();
         }    
         return node;
     }
 
     function parseArray() {
-        const node: ASTNode = { type: "Array", value: [] };
+        const node: JsonNode = { type: "Array", value: [] };
         let token = consume();
     
         while (token.type !== "BracketClose") {
@@ -67,10 +66,12 @@ export const parser = (tokens: Token[]): boolean => {
         return node;
     }    
     
-    try {        
+    try{
         const node = parseValue();
         return true;
-    } catch (Error) {
+    }
+    catch(Error)
+    {
         return false;
     }
 };

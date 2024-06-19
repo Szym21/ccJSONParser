@@ -47,8 +47,6 @@ const parser = (tokens) => {
                 throw new Error(`Expected String key in object. Token type: ${token.type}`);
             }
             token = consume();
-            if (token.type === "Comma")
-                token = consume();
         }
         return node;
     }
@@ -68,7 +66,7 @@ const parser = (tokens) => {
         const node = parseValue();
         return true;
     }
-    catch (error) {
+    catch (Error) {
         return false;
     }
 };

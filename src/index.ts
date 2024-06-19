@@ -2,20 +2,24 @@
 
 import { parser } from "./parser";
 import { tokenizer } from "./tokenizer";
+import { Result } from "./types";
 import path from 'path';
 import fs from 'fs';
 
-const FAILURE_EXIT_CODE = 1;
-const SUCCESS_EXIT_CODE = 0;
-
-function preparePath(fileName: string) : string {
+export function preparePath(fileName: string) : string {
     return path.resolve(fileName);
 }
 
-function readFile(filepath: string) : string {
+export function readFile(filepath: string) : string {
     return fs.readFileSync(filepath, 'utf8').toString()
 }
 
-const result = parser(tokenizer(readFile(preparePath(process.argv[2]))))
+try{
+    const tokens = tokenizer(readFile(preparePath(process.argv[2])))    
+    const result = parser(tokens);
+    console.log(result ? Result.SUCCESS_EXIT_CODE : Result.FAILURE_EXIT_CODE);
+}
+catch(Error){
+    console.log(Result.FAILURE_EXIT_CODE);
+}
 
-console.log(result? SUCCESS_EXIT_CODE : FAILURE_EXIT_CODE);

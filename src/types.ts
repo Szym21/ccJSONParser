@@ -1,3 +1,8 @@
+export enum Result {
+  SUCCESS_EXIT_CODE = 0,
+  FAILURE_EXIT_CODE = 1
+}
+
 export type TokenType =
   | "BraceOpen"
   | "BraceClose"
@@ -16,9 +21,9 @@ export interface Token {
   value: string;
 }
 
-export type ASTNode =
-  | { type: "Object"; value: { [key: string]: ASTNode } }
-  | { type: "Array"; value: ASTNode[] }
+export type JsonNode =
+  | { type: "Object"; value: { [key: string]: JsonNode } }
+  | { type: "Array"; value: JsonNode[] }
   | { type: "String"; value: string }
   | { type: "Number"; value: number }
   | { type: "Boolean"; value: boolean }
