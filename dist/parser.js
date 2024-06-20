@@ -34,7 +34,9 @@ const parser = (tokens) => {
         const node = { type: "Object", value: {} };
         let token = consume();
         while (token.type !== "BraceClose") {
-            if (token.type === "String") {
+            if (token.type === "String" || token.type === "Comma") {
+                if (token.type === "Comma")
+                    token = consume();
                 const key = token.value;
                 token = consume();
                 if (token.type !== "Colon")
