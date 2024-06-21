@@ -1,7 +1,8 @@
 import { parser } from "./parser";
 import { tokenizer } from "./tokenizer";
-import { readFile } from "./index.js";
+import { readFile, preparePath } from "./index.js";
 import { Result } from "./types";
+import fs from 'fs'
 
 
 function Test(filePath : string) {
@@ -15,15 +16,27 @@ function Test(filePath : string) {
     }
 }
 
-Test("./tests/step1/valid.json");
-Test("./tests/step1/invalid.json");
-Test("./tests/step2/valid.json");
-Test("./tests/step2/valid2.json");
-Test("./tests/step2/invalid.json");
-Test("./tests/step2/invalid2.json");
-Test("./tests/step3/valid.json");
-Test("./tests/step3/invalid.json");
-Test("./tests/step4/valid.json");
-Test("./tests/step4/valid2.json");
-Test("./tests/step4/invalid.json");
+const tests : string[]  = [
+    "./tests/step1/valid.json",
+    "./tests/step1/invalid.json",
+    "./tests/step2/valid.json",
+    "./tests/step2/valid2.json",
+    "./tests/step2/invalid.json",
+    "./tests/step2/invalid2.json",
+    "./tests/step3/valid.json",
+    "./tests/step3/invalid.json",
+    "./tests/step4/valid.json",
+    "./tests/step4/valid2.json",
+    "./tests/step4/invalid.json"
+]
 
+tests.forEach(test => {
+    Test(test);
+    });
+
+fs.readdir("./tests/test", (err, files) => {
+    //console.log(files);
+     files.forEach(file => {
+       Test(`./tests/test/${file}`);
+     });
+  });
