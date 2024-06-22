@@ -49,7 +49,8 @@ export const parser = (tokens: Token[]): boolean => {
                 throw new Error(`Expected String key in object. Token type: ${token.type}`);
             }
             token = consume(); 
-        }    
+        }
+        if(current < tokens.length-1)   throw new Error(); 
         return node;
     }
 
@@ -68,7 +69,7 @@ export const parser = (tokens: Token[]): boolean => {
     }    
     
     try{
-        const node = parseValue();
+        const node = parseObject();
         return true;
     }
     catch(Error)

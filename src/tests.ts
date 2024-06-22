@@ -1,6 +1,6 @@
 import { parser } from "./parser";
 import { tokenizer } from "./tokenizer";
-import { readFile, preparePath } from "./index.js";
+import { readFile } from "./index.js";
 import { Result } from "./types";
 import fs from 'fs'
 

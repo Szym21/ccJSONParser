@@ -50,6 +50,8 @@ const parser = (tokens) => {
             }
             token = consume();
         }
+        if (current < tokens.length - 1)
+            throw new Error();
         return node;
     }
     function parseArray() {
@@ -65,7 +67,7 @@ const parser = (tokens) => {
         return node;
     }
     try {
-        const node = parseValue();
+        const node = parseObject();
         return true;
     }
     catch (Error) {
