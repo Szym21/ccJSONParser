@@ -11,6 +11,14 @@ export const parser = (tokens: Token[]): boolean => {
       return tokens[++current];
     }
 
+    function parse(): JsonNode {
+        const token = tokens[current];
+        if(token.type === 'BraceOpen') return parseObject();
+        else if(token.type === 'BracketOpen') return parseArray();
+        else throw new Error();
+
+    }
+
     function parseValue(): JsonNode {
         const token = tokens[current];
         switch (token.type) {
@@ -35,7 +43,7 @@ export const parser = (tokens: Token[]): boolean => {
 
     function parseObject() {
         const node: JsonNode = { type: "Object", value: {} };
-        let token = consume(); 
+        let token = consume();         
         while (token.type !== "BraceClose") {
             if (token.type === "String" || token.type === "Comma") {
                 if (token.type === "Comma") token = consume();
@@ -50,7 +58,7 @@ export const parser = (tokens: Token[]): boolean => {
             }
             token = consume(); 
         }
-        if(current < tokens.length-1)   throw new Error(); 
+        if(tokens[tokens.length-1] .type !== "BraceClose") throw new Error();
         return node;
     }
 
@@ -69,11 +77,13 @@ export const parser = (tokens: Token[]): boolean => {
     }    
     
     try{
-        const node = parseObject();
+
+        const node = parse();
         return true;
     }
     catch(Error)
     {
+        //console.log(Error);
         return false;
     }
 };

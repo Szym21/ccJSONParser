@@ -3,6 +3,7 @@ import { isNumber, isBooleanTrue, isBooleanFalse, isNull } from "./utils";
 
 export const tokenizer = (input: string): Token[] => {
     let current = 0;
+    let deepnest = 1;
     const tokens: Token[] = []; 
     while (current < input.length) {
         let char = input[current];
@@ -10,7 +11,8 @@ export const tokenizer = (input: string): Token[] => {
         switch (char){
             case "{":
                 tokens.push({ type: "BraceOpen", value: char });
-                current++
+                current++;
+                deepnest++;
                 continue;
 
             case "}":
@@ -21,6 +23,7 @@ export const tokenizer = (input: string): Token[] => {
             case "[":
                 tokens.push({ type: "BracketOpen", value: char });
                 current++;
+                deepnest++;
                 continue; 
 
             case "]":
@@ -42,6 +45,8 @@ export const tokenizer = (input: string): Token[] => {
                 let value = "";
                 char = input[++current];
                 while (char !== '"') {
+                    if (char === '\\') throw new Error('Illegal backslash escape');
+                    if (char === '&#9') throw new Error('Tab character');
                     value += char;
                     char = input[++current];
                 }
@@ -50,9 +55,9 @@ export const tokenizer = (input: string): Token[] => {
                 continue;
         }
 
-        if (/[\d\w]/.test(char)) {
+        if (/[-?\d\.\+\w]/.test(char)) {
             let value = "";
-            while (/[\d\w]/.test(char)) {
+            while (/[-?\d\.\+\w]/.test(char)) {
             value += char;
             char = input[++current];
             }
@@ -73,5 +78,6 @@ export const tokenizer = (input: string): Token[] => {
       
         throw new Error("Unexpected character: " + char);
     }
+    if(deepnest > 19) throw new Error("Too deep");
     return tokens;
 };

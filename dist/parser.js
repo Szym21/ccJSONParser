@@ -9,6 +9,15 @@ const parser = (tokens) => {
     function consume() {
         return tokens[++current];
     }
+    function parse() {
+        const token = tokens[current];
+        if (token.type === 'BraceOpen')
+            return parseObject();
+        else if (token.type === 'BracketOpen')
+            return parseArray();
+        else
+            throw new Error();
+    }
     function parseValue() {
         const token = tokens[current];
         switch (token.type) {
@@ -50,7 +59,7 @@ const parser = (tokens) => {
             }
             token = consume();
         }
-        if (current < tokens.length - 1)
+        if (tokens[tokens.length - 1].type !== "BraceClose")
             throw new Error();
         return node;
     }
@@ -67,10 +76,11 @@ const parser = (tokens) => {
         return node;
     }
     try {
-        const node = parseObject();
+        const node = parse();
         return true;
     }
     catch (Error) {
+        //console.log(Error);
         return false;
     }
 };

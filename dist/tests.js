@@ -12,6 +12,7 @@ function Test(filePath) {
     try {
         const tokens = (0, tokenizer_1.tokenizer)((0, index_js_1.readFile)(filePath));
         const result = (0, parser_1.parser)(tokens);
+        //console.log(tokens);
         console.log(`${filePath} exit code: ${(result ? types_1.Result.SUCCESS_EXIT_CODE : types_1.Result.FAILURE_EXIT_CODE)}`);
     }
     catch (Error) {
@@ -20,22 +21,21 @@ function Test(filePath) {
 }
 const tests = [
     "./tests/step1/valid.json",
-    "./tests/step1/invalid.json",
     "./tests/step2/valid.json",
     "./tests/step2/valid2.json",
-    "./tests/step2/invalid.json",
-    "./tests/step2/invalid2.json",
     "./tests/step3/valid.json",
-    "./tests/step3/invalid.json",
     "./tests/step4/valid.json",
     "./tests/step4/valid2.json",
+    "./tests/step1/invalid.json",
+    "./tests/step2/invalid.json",
+    "./tests/step2/invalid2.json",
+    "./tests/step3/invalid.json",
     "./tests/step4/invalid.json"
 ];
-tests.forEach(test => {
-    Test(test);
-});
+// tests.forEach(test => {
+//     Test(test);
+//     });
 fs_1.default.readdir("./tests/test", (err, files) => {
-    //console.log(files);
     files.forEach(file => {
         Test(`./tests/test/${file}`);
     });

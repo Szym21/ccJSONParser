@@ -21,9 +21,11 @@ exports.readFile = readFile;
 try {
     const tokens = (0, tokenizer_1.tokenizer)(readFile(preparePath(process.argv[2])));
     const result = (0, parser_1.parser)(tokens);
+    console.log(tokens);
     console.log(result ? types_1.Result.SUCCESS_EXIT_CODE : types_1.Result.FAILURE_EXIT_CODE);
 }
 catch (Error) {
+    console.log(Error);
     console.log(types_1.Result.FAILURE_EXIT_CODE);
 }
 //# sourceMappingURL=index.js.map

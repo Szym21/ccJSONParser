@@ -17,9 +17,11 @@ export function readFile(filepath: string) : string {
 try{
     const tokens = tokenizer(readFile(preparePath(process.argv[2])))    
     const result = parser(tokens);
+    console.log(tokens);
     console.log(result ? Result.SUCCESS_EXIT_CODE : Result.FAILURE_EXIT_CODE);
 }
 catch(Error){
+    console.log(Error);
     console.log(Result.FAILURE_EXIT_CODE);
 }
 
