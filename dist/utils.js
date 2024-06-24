@@ -7,7 +7,7 @@ const isBooleanFalse = (value) => value === "false";
 exports.isBooleanFalse = isBooleanFalse;
 const isNull = (value) => value === "null";
 exports.isNull = isNull;
-const isNumber = (value) => /-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?/.test(value) && isHex(value) == false;
+const isNumber = (value) => !isNaN(Number(value)) && hasLeadingZeros(value) == false && isHex(value) == false;
 exports.isNumber = isNumber;
 function hasLeadingZeros(value) {
     return /^0+/.test(value);

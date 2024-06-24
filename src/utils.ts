@@ -1,7 +1,7 @@
 export const isBooleanTrue = (value: string): boolean => value === "true";
 export const isBooleanFalse = (value: string): boolean => value === "false";
 export const isNull = (value: string): boolean => value === "null";
-export const isNumber = (value: string): boolean => /-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?/.test(value) && isHex(value) == false;
+export const isNumber = (value: string): boolean => !isNaN(Number(value)) && hasLeadingZeros(value)== false && isHex(value) == false;
 
 
 function hasLeadingZeros(value: string) : boolean {

@@ -46,7 +46,10 @@ export const parser = (tokens: Token[]): boolean => {
         let token = consume();         
         while (token.type !== "BraceClose") {
             if (token.type === "String" || token.type === "Comma") {
-                if (token.type === "Comma") token = consume();
+                if (token.type === "Comma") {
+                    token = consume();
+                    if (token.type !== "String") throw new Error("Extra comma");
+                }
                 const key = token.value;
                 token = consume();
                 if (token.type !== "Colon") throw new Error("Expected : in key-value pair");
