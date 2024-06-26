@@ -39,10 +39,9 @@ const tokenizer = (input) => {
                 let value = "";
                 char = input[++current];
                 while (char !== '"') {
-                    if (char === '\\')
-                        throw new Error('Illegal backslash escape');
-                    if (char === '&#9')
-                        throw new Error('Tab character');
+                    //if (char === '\\') throw new Error('Illegal backslash escape');
+                    //if (char === '&#9' || char === '\t') throw new Error('Tab character');
+                    //if (char === '\n') throw new Error('Break line');
                     value += char;
                     char = input[++current];
                 }
@@ -52,7 +51,7 @@ const tokenizer = (input) => {
         }
         if (/[-?\d\.\+\w]/.test(char)) {
             let value = "";
-            while (/[-?\d\.\+\w]/.test(char)) {
+            while (char !== ',' && char !== ']' && char !== '}') {
                 value += char;
                 char = input[++current];
             }
@@ -74,7 +73,7 @@ const tokenizer = (input) => {
         }
         throw new Error("Unexpected character: " + char);
     }
-    if (deepnest > 19)
+    if (deepnest > 20)
         throw new Error("Too deep");
     return tokens;
 };

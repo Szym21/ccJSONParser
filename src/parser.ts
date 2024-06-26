@@ -70,23 +70,30 @@ export const parser = (tokens: Token[]): boolean => {
         let token = consume();
     
         while (token.type !== "BracketClose") {
-            const value = parseValue();
+            let value : JsonNode;
+            if (token.type === "BracketOpen")  value = parseArray();
+            value = parseValue();
             node.value.push(value);
         
             token = consume();
-            if (token.type === "Comma") token = consume();
-        }    
+            if (token.type === "Comma") {
+                token = consume();
+                if (token.type !== "String") throw new Error("Extra comma");
+            }
+        }           
+        if(current < tokens.length) token = consume(); 
+        if(token !== undefined) throw new Error();
+        if(tokens[tokens.length-1].type !== "BracketClose") throw new Error();
         return node;
     }    
     
-    try{
+    try {
 
         const node = parse();
         return true;
     }
-    catch(Error)
-    {
-        //console.log(Error);
+    catch(Error) {
+        console.log(Error);
         return false;
     }
 };
