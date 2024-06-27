@@ -7,16 +7,17 @@ const isBooleanFalse = (value) => value === "false";
 exports.isBooleanFalse = isBooleanFalse;
 const isNull = (value) => value === "null";
 exports.isNull = isNull;
-const isNumber = (value) => isJsonNumber(value);
+const isNumber = (value) => !isNaN(Number(value.toLocaleString())) && hasLeadingZeros(value) == false && isHex(value) == false;
 exports.isNumber = isNumber;
-//!isNaN(Number(value)) && hasLeadingZeros(value)== false && isHex(value) == false;
 function hasLeadingZeros(value) {
-    return /^0+/.test(value);
+    return /^0[0-9].*/.test(value);
 }
 function isHex(value) {
     return /0[xX][0-9a-fA-F]+/.test(value);
 }
 function isJsonNumber(value) {
+    if (value.includes('/s'))
+        throw new Error('Extra space');
     const regex = new RegExp('-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?');
     return regex.test(value);
 }

@@ -45,9 +45,9 @@ export const tokenizer = (input: string): Token[] => {
                 let value = "";
                 char = input[++current];
                 while (char !== '"') {
-                    //if (char === '\\') throw new Error('Illegal backslash escape');
-                    //if (char === '&#9' || char === '\t') throw new Error('Tab character');
-                    //if (char === '\n') throw new Error('Break line');
+                    if (char === '\\') throw new Error('Illegal backslash escape');
+                    if (char === '&#9' || char === '\t') throw new Error('Tab character');
+                    if (char === '\n') throw new Error('Break line');
                     value += char;
                     char = input[++current];
                 }
